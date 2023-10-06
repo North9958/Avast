@@ -33,10 +33,12 @@ public class SelectPopupMole : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && hit.collider.tag == "SelectedMole")
             {
+                selectedMole.GetComponent<MoleController>().Hit();
                 UpdateSelectedMole();
                 print(hit.collider.name);
+
             }
-               
+
         }
     }
     private void SelectMole()
@@ -51,8 +53,8 @@ public class SelectPopupMole : MonoBehaviour
         selectedMole.GetComponent<Renderer>().material = moleSkin;
         selectedMole.tag = "moles";
         moleIndex = Random.Range(0, molePrefab.Length);
-        selectedMole = molePrefab[moleIndex];
-        selectedMole.tag = "SelectedMole";
-        selectedMole.GetComponent<Renderer>().material = setMaterial;
+        SelectMole();
     }
+
+
 }
