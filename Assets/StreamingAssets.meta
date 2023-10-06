@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/StreamingAssets.meta
 guid: 595d2e1dc955bfc46a52fd82e5c1f422
 folderAsset: yes
+========
+guid: 1cf8a59785f84d54188f793e1c6c28c5
+>>>>>>>> 1f09f70bf0b93b3b3d0f84555be65d4794b047be:Assets/Liminal/TemplateSetup/liminal_setup.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
