@@ -48,7 +48,7 @@ public class SelectPopupMole : MonoBehaviour
         selectedMole.tag = "SelectedMole";
         selectedMole.GetComponent<Renderer>().material = setMaterial;
     }
-    private void UpdateSelectedMole()
+    public void UpdateSelectedMole()
     {
         selectedMole.GetComponent<Renderer>().material = moleSkin;
         selectedMole.tag = "moles";

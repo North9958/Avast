@@ -6,6 +6,7 @@ TagManager:
   tags:
   - moles
   - SelectedMole
+  - Hammer
   layers:
   - Default
   - TransparentFX

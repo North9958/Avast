@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoleController : MonoBehaviour
 {
 
+    public GameObject selectMole;
     public float moveDistance = 5f;
     [SerializeField] private float moveSpeed = .5f;
     float downTimer = 0;
@@ -123,6 +124,15 @@ public class MoleController : MonoBehaviour
 
     //}
 
+    public void OnCollisionEnter(Collision other)
+    {
+        if(other.gameObject.tag == "Hammer")
+        {
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
+        }
+    }
+
     private void TickTimers()
 
     {
@@ -158,4 +168,5 @@ public class MoleController : MonoBehaviour
         this.tag = "moles";
     }
 
+   
 }
