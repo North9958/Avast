@@ -9,6 +9,7 @@ public class SelectPopupMole : MonoBehaviour
 {
     public GameObject[] molePrefab;
     public GameObject selectedMole;
+    public GameObject pastSelectedMole;
     public int moleIndex;
 
     Random rand = new Random();
@@ -22,6 +23,8 @@ public class SelectPopupMole : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        moleIndex = 0;
+        pastSelectedMole = molePrefab[moleIndex];
         SelectMole();
     }
 
@@ -45,11 +48,19 @@ public class SelectPopupMole : MonoBehaviour
     {
         moleIndex = Random.Range(0, molePrefab.Length);
         selectedMole = molePrefab[moleIndex];
-        selectedMole.tag = "SelectedMole";
-        selectedMole.GetComponent<Renderer>().material = setMaterial;
+        if (selectedMole.name != pastSelectedMole.name)
+        {
+            selectedMole.tag = "SelectedMole";
+            selectedMole.GetComponent<Renderer>().material = setMaterial;
+        }
+        else
+        {
+            SelectMole();
+        }
     }
     public void UpdateSelectedMole()
     {
+        pastSelectedMole = molePrefab[moleIndex];
         selectedMole.GetComponent<Renderer>().material = moleSkin;
         selectedMole.tag = "moles";
         moleIndex = Random.Range(0, molePrefab.Length);
