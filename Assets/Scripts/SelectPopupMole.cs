@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SelectPopupMole : MonoBehaviour
 {
     public GameObject[] molePrefab;
-    public GameObject selectedMole;
+    public GameObject selectedMole; 
     public int moleIndex;
 
     Random rand = new Random();
