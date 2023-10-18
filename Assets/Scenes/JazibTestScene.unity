@@ -302,7 +302,7 @@ PrefabInstance:
         type: 3}
       propertyPath: selectMole
       value: 
-      objectReference: {fileID: 2002786266}
+      objectReference: {fileID: 1186288677}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8644515bece57024192ea87e43df0090, type: 3}
 --- !u!1001 &545233947
@@ -647,7 +647,13 @@ MonoBehaviour:
   - {fileID: 1417787486}
   - {fileID: 79370463}
   selectedMole: {fileID: 0}
+  selectedMole2: {fileID: 0}
+  pastSelectedMole: {fileID: 0}
+  pastSelectedMole2: {fileID: 0}
   moleIndex: 0
+  moleIndex2: 0
+  timeLeft: 10
+  amountOfPopUps: 1
   moleSkin: {fileID: 2100000, guid: aa748b284fe2875458aa1222f4c2ef7c, type: 2}
   setMaterial: {fileID: 2100000, guid: d4df8183a58aa9e4fb931cfefc3584d6, type: 2}
 --- !u!4 &1186288679

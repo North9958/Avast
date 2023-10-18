@@ -22,6 +22,7 @@ public class MoleController : MonoBehaviour
     private bool isMovingUp = false;
     private Vector3 originalPosition;
 
+
     Ray ray;
     RaycastHit hit;
 
@@ -39,8 +40,8 @@ public class MoleController : MonoBehaviour
     // Update is called once per frame
 
     void Update()
-
     {        
+        
         //randoLimitTimer += Time.deltaTime;
 
         //SetRandoLimit();
@@ -61,7 +62,7 @@ public class MoleController : MonoBehaviour
 
             }
         }
-        else if (this.tag == "SelectedMole")
+        else if (this.tag == "SelectedMole" || this.tag == "SelectedMole2")
         {
 
             Popup();
@@ -126,10 +127,16 @@ public class MoleController : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag == "Hammer")
+        if(other.gameObject.tag == "Hammer"&& this.tag == "SelectedMole")
         {
             Hit();
             selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
+            
+        }
+        else if(other.gameObject.tag == "Hammer" && this.tag == "SelectedMole2")
+        {
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole2();
         }
     }
 

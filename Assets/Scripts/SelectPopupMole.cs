@@ -1,42 +1,41 @@
-﻿using System.Collections;
+﻿using Google.ProtocolBuffers.Collections;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Valve.VR.SteamVR_TrackedObject;
 
 public class SelectPopupMole : MonoBehaviour
 {
-    public GameObject[] molePrefab;
-    public GameObject selectedMole;
-    public GameObject pastSelectedMole;
+
+    public GameObject[] molePrefab; //holds all the pirate moles
+
+    public GameObject selectedMole; 
     public GameObject selectedMole2;
+
+    public GameObject pastSelectedMole; 
     public GameObject pastSelectedMole2;
-    public GameObject selectedMole3;
-    public GameObject pastSelectedMole3;
-    public int moleIndex;
+
+    public int moleIndex; // selected specific PirateMole from array molePrefabs
     public int moleIndex2;
-    public int moleIndex3;
 
-
-    Random rand = new Random();
+    public float timeLeft = 10f;
+    public int amountOfPopUps = 1; // how many pop up at a time
 
     public Material moleSkin;
     public Material setMaterial;
 
-    Ray ray;
-    RaycastHit hit;
+    bool allowTwoSpawn;
 
     // Start is called before the first frame update
     void Start()
     {
-        moleIndex = -1;
-        moleIndex2 = -1;
-        moleIndex3 = -1;
-        pastSelectedMole = molePrefab[moleIndex];
+        //assign mole for script to start
+        pastSelectedMole = molePrefab[moleIndex];  
         pastSelectedMole2 = molePrefab[moleIndex2];
-        pastSelectedMole3 = molePrefab[moleIndex3];
-
 
         SelectMole();
     }
@@ -44,33 +43,30 @@ public class SelectPopupMole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+
+        CountDown();
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (Input.GetMouseButtonDown(0) && hit.collider.tag == "SelectedMole")
+            if (Input.GetMouseButtonDown(0))
             {
-                selectedMole.GetComponent<MoleController>().Hit();
-                UpdateSelectedMole();
-                print(hit.collider.name);
-
+                if (hit.collider.tag == "SelectedMole")
+                {
+                    selectedMole.GetComponent<MoleController>().Hit(); // activate HIT() from MoleXontroller resetting opsition
+                    UpdateSelectedMole();
+                }
+                else if (hit.collider.tag == "SelectedMole2")
+                {
+                    selectedMole2.GetComponent<MoleController>().Hit();
+                    UpdateSelectedMole2();
+                }
             }
-            else if((Input.GetMouseButtonDown(0) && hit.collider.tag == "SelectedMole2"))
-            {
-                selectedMole.GetComponent<MoleController>().Hit();
-                UpdateSelectedMole();
-                print(hit.collider.name);
-            }
-            else if ((Input.GetMouseButtonDown(0) && hit.collider.tag == "SelectedMole3"))
-            {
-                selectedMole.GetComponent<MoleController>().Hit();
-                UpdateSelectedMole();
-                print(hit.collider.name);
-            }
-
         }
     }
-    private void SelectMole()
+    private void SelectMole() //choose the next pirate to popup based on amountselected to popup
     {
+
+        pastSelectedMole = molePrefab[moleIndex];
         moleIndex = Random.Range(0, molePrefab.Length);
         selectedMole = molePrefab[moleIndex];
         if (selectedMole.name != pastSelectedMole.name)
@@ -82,45 +78,76 @@ public class SelectPopupMole : MonoBehaviour
         {
             SelectMole();
         }
-    }
+        if(amountOfPopUps == 2)
+        {
+            allowTwoSpawn = true;
+            if(allowTwoSpawn == true)
+            {
+                pastSelectedMole2 = molePrefab[moleIndex2];
+                moleIndex2 = Random.Range(0, molePrefab.Length);
+                selectedMole2 = molePrefab[moleIndex2];
 
+
+                if (selectedMole2.name != pastSelectedMole2.name)
+                {
+                    selectedMole2.tag = "SelectedMole2";
+                    selectedMole2.GetComponent<Renderer>().material = setMaterial;
+
+                }
+                else
+                {
+                    SelectMole();
+                }
+                allowTwoSpawn = false;
+                amountOfPopUps = 1;
+            }
+        }
+
+    }
     private void SelectMole2()
     {
-        moleIndex = Random.Range(0, molePrefab.Length);
-        selectedMole = molePrefab[moleIndex];
-        if (selectedMole.name != pastSelectedMole.name)
+
+
+        pastSelectedMole2 = molePrefab[moleIndex2];
+        moleIndex2 = Random.Range(0, molePrefab.Length);
+        selectedMole2 = molePrefab[moleIndex2];
+
+
+        if (selectedMole2.name != pastSelectedMole2.name)
         {
-            selectedMole.tag = "SelectedMole2";
-            selectedMole.GetComponent<Renderer>().material = setMaterial;
+            selectedMole2.tag = "SelectedMole2";
+            selectedMole2.GetComponent<Renderer>().material = setMaterial;
+
         }
         else
         {
             SelectMole2();
         }
+
+        
     }
 
-    private void SelectMole3()
-    {
-        moleIndex = Random.Range(0, molePrefab.Length);
-        selectedMole = molePrefab[moleIndex];
-        if (selectedMole.name != pastSelectedMole.name)
-        {
-            selectedMole.tag = "SelectedMole";
-            selectedMole.GetComponent<Renderer>().material = setMaterial;
-        }
-        else
-        {
-            SelectMole3();
-        }
-    }
     public void UpdateSelectedMole()
     {
-        pastSelectedMole = molePrefab[moleIndex];
+
         selectedMole.GetComponent<Renderer>().material = moleSkin;
         selectedMole.tag = "moles";
-        moleIndex = Random.Range(0, molePrefab.Length);
         SelectMole();
     }
+    public void UpdateSelectedMole2()
+    {
 
-
+        selectedMole2.GetComponent<Renderer>().material = moleSkin;
+        selectedMole2.tag = "moles";
+        SelectMole2();
+    }
+    void CountDown()
+    {
+        timeLeft -= Time.deltaTime;
+        if (timeLeft <= 0)
+        {
+            amountOfPopUps++;
+            timeLeft += 10f;
+        }
+    }
 }
