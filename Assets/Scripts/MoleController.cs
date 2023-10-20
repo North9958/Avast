@@ -93,10 +93,10 @@ public class MoleController : MonoBehaviour
 
     }
 
-    private void Popup()
+    public void Popup()
 
     {
-
+        Debug.Log("Popup script STARTED for " + this);
         transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveSpeed * Time.deltaTime);
 
     }
