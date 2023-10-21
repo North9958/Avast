@@ -21,6 +21,7 @@ public class SelectPopupMole : MonoBehaviour
 
     /// <summary>
     public bool[] selectedmoles;
+    int tempMole;
     /// </summary>
 
 
@@ -33,18 +34,14 @@ public class SelectPopupMole : MonoBehaviour
 
     public float timeLeft = 10f;
     public int amountOfPopUps = 1; // how many pop up at a time
-    public int tempAmountSelected = 0; // variable to track how many are selected
 
     public Material moleSkin;
     public Material setMaterial; //replace with mesh renderer material for 3d renders
 
-    bool allowTwoSpawn;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Access the script attached to the GameObject
-        //TargetScript targetScript = targetObject.GetComponent<TargetScript>();
 
         Array.Resize(ref selectedmoles, molePrefab.Length);
 
@@ -56,8 +53,28 @@ public class SelectPopupMole : MonoBehaviour
         //}
 
 
-
         SelectNextMole();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //SelectNextMole();
+        CountDown();
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (hit.collider.tag == "moles")
+                {
+                    molePrefab[tempMole].GetComponent<MoleController>().Hit(); // activate HIT() from MoleXontroller resetting opsition
+                    //molePrefab[tempMole].tag = "SelectedMole";
+                    Debug.Log("hit: " + hit.collider.tag);
+                    UpdateSelectedMole();
+                }
+            }
+        }
     }
     public void SelectNextMole()
     {
@@ -66,33 +83,46 @@ public class SelectPopupMole : MonoBehaviour
         // This value runs the bool statement
         bool run = true;
 
-        //
+
         while (run)
         {
             if (CheckActiveMoles())
             {
-                int temp;
-                temp = UnityEngine.Random.Range(0, selectedmoles.Length - 1);
+                MoleSelect();
 
-                if (selectedmoles[temp] == false)
-                {
-                    selectedmoles[temp] = true;
-
-                    Popup(molePrefab[temp]);
-
-                    foreach (var mole in selectedmoles)
-                    {
-                        Debug.Log($"Mole " + temp + " has been set to " + selectedmoles[temp]);
-                    }
-                }
             }
             else
             {
                 run = false;
             }
         }
-    }
 
+    }
+    public void MoleSelect()
+    {
+        for (int i = 0; i < amountOfPopUps; i++)
+        {
+            tempMole = UnityEngine.Random.Range(0, selectedmoles.Length - 1);
+
+            if (selectedmoles[tempMole] == false)
+            {
+                selectedmoles[tempMole] = true;
+
+                popUp(molePrefab[tempMole]);
+                molePrefab[tempMole].GetComponent<Renderer>().material = setMaterial;//notify visually which mole is selected
+
+                foreach (var mole in selectedmoles)
+                {
+                    Debug.Log($"Mole " + tempMole + " has been set to " + selectedmoles[tempMole]);
+                }
+            }
+            else
+            {
+                MoleSelect();
+            }
+        }
+
+    }
     public bool CheckActiveMoles()
     {
 
@@ -118,36 +148,13 @@ public class SelectPopupMole : MonoBehaviour
 
     //grabs the mole
 
-    public void Popup(GameObject Mole)
+    public void popUp(GameObject Mole)
     {
         Debug.Log("Run popup script for" + Mole);
 
         Mole.GetComponent<MoleController>().Popup();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        CountDown();
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (hit.collider.tag == "SelectedMole")
-                {
-                    selectedMole.GetComponent<MoleController>().Hit(); // activate HIT() from MoleXontroller resetting opsition
-                    UpdateSelectedMole();
-                }
-                else if (hit.collider.tag == "SelectedMole2")
-                {
-                    selectedMole2.GetComponent<MoleController>().Hit();
-                    UpdateSelectedMole2();
-                }
-            }
-        }
-    }
     private void SelectMole() //choose the next pirate to popup based on amountselected to popup
     {
 
@@ -214,11 +221,33 @@ public class SelectPopupMole : MonoBehaviour
 
     public void UpdateSelectedMole()
     {
+        //for (int i = 0; i < amountOfPopUps; i++)
+        //{
+        molePrefab[tempMole].GetComponent<Renderer>().material = moleSkin;
+        //selectedMole.tag = "moles";
+        //SelectMole();
+        selectedmoles[tempMole] = false;
+        SelectNextMole();
+        //}
+        //for (int i = 0; i < selectedmoles.Length; i++)
+        //{
+        //    //if (selectedmoles[i] == true)
+        //    //{
+        //    //    //// Deselect the mole
+        //    //    //selectedmoles[i] = false;
 
-        selectedMole.GetComponent<Renderer>().material = moleSkin;
-        selectedMole.tag = "moles";
-        SelectMole();
+        //    //    //// Change the material back to the deselected state (if needed)
+        //    //    //molePrefab[i].GetComponent<Renderer>().material = moleSkin;
+        //    //    molePrefab[i].GetComponent<Renderer>().material = moleSkin;
+        //    //    //selectedMole.tag = "moles";
+        //    //    //SelectMole();
+        //    //    selectedmoles[i] = false;
+        //    //    SelectNextMole();
+        //    //}
+        //    //SelectNextMole();
+        //}
     }
+
     public void UpdateSelectedMole2()
     {
 

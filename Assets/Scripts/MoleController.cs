@@ -22,6 +22,8 @@ public class MoleController : MonoBehaviour
     private bool isMovingUp = false;
     private Vector3 originalPosition;
 
+    private float popUpStartTime;
+    private float popUpDuration = 1.0f; // Adjust this duration as needed
 
     Ray ray;
     RaycastHit hit;
@@ -96,9 +98,13 @@ public class MoleController : MonoBehaviour
     public void Popup()
 
     {
+        isMovingUp = true;
+        moveDistance += moveSpeed * Time.deltaTime;
+        moveDistance = Mathf.Clamp01(moveDistance);
         Debug.Log("Popup script STARTED for " + this);
-        transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveSpeed * Time.deltaTime);
-
+        //transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveSpeed * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0, moveDistance, 0), Time.deltaTime / moveSpeed);
+        transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveDistance);
     }
 
     private void MoveDown()
