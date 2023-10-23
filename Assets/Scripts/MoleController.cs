@@ -6,7 +6,7 @@ public class MoleController : MonoBehaviour
 {
 
     public GameObject selectMole;
-    public float moveDistance = 5f;
+    public float moveDistance = 0f;
     [SerializeField] private float moveSpeed = .5f;
     float downTimer = 0;
     float upTimer = 0;
@@ -25,6 +25,7 @@ public class MoleController : MonoBehaviour
     private float popUpStartTime;
     private float popUpDuration = 1.0f; // Adjust this duration as needed
 
+
     Ray ray;
     RaycastHit hit;
 
@@ -34,6 +35,7 @@ public class MoleController : MonoBehaviour
 
     {
 
+
         this.tag = "moles";
         originalPosition = transform.position;
 
@@ -42,14 +44,15 @@ public class MoleController : MonoBehaviour
     // Update is called once per frame
 
     void Update()
-    {        
-        
+    {
+
         //randoLimitTimer += Time.deltaTime;
 
         //SetRandoLimit();
 
+
         TickTimers();
-        if(isUp)
+        if (isUp)
         {
             isMovingUp = false;
             if (downTimer >= maxUpTime)
@@ -64,29 +67,29 @@ public class MoleController : MonoBehaviour
 
             }
         }
-        else if (this.tag == "SelectedMole" || this.tag == "SelectedMole2")
-        {
+        //else if (this.tag == "SelectedMole" || this.tag == "SelectedMole2") //
+        //{
 
-            Popup();
-            isMovingUp = true;
-            if (moveTimer >= moveTimeLimit)
+        //    Popup();
+        //    isMovingUp = true;
+        //    if (moveTimer >= moveTimeLimit)
 
-            {
+        //    {
 
-                isMovingUp = false;
+        //        isMovingUp = false;
 
-                isUp = true;
+        //        isUp = true;
 
-                moveTimer = 0;
+        //        moveTimer = 0;
 
-            }
+        //    }
 
-        }
-        else if (this.tag == "moles")
-        {
-            isMovingUp = false;
-        }
-        
+        //}
+        //else if (this.tag == "moles")  //
+        //{
+        //    isMovingUp = false;
+        //}
+
     }
 
     private void FixedUpdate()
@@ -105,6 +108,7 @@ public class MoleController : MonoBehaviour
         //transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveSpeed * Time.deltaTime);
         //transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0, moveDistance, 0), Time.deltaTime / moveSpeed);
         transform.position = Vector3.Lerp(this.transform.position, this.transform.position + new Vector3(0, moveDistance, 0), moveDistance);
+
     }
 
     private void MoveDown()
@@ -133,17 +137,18 @@ public class MoleController : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag == "Hammer"&& this.tag == "SelectedMole")
+        if (other.gameObject.tag == "Hammer" && this.tag == "moles")
         {
-            Hit();
+            //Hit();
+            MoveDown();
             selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
-            
+
         }
-        else if(other.gameObject.tag == "Hammer" && this.tag == "SelectedMole2")
-        {
-            Hit();
-            selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole2();
-        }
+        //else if(other.gameObject.tag == "Hammer" && this.tag == "SelectedMole2")
+        //{
+        //    Hit();
+        //    selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole2();
+        //}
     }
 
     private void TickTimers()
@@ -180,6 +185,4 @@ public class MoleController : MonoBehaviour
         moveTimer = 0;
         this.tag = "moles";
     }
-
-   
 }
