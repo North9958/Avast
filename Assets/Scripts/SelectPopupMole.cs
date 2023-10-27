@@ -14,18 +14,16 @@ public class SelectPopupMole : MonoBehaviour
 
     public GameObject[] molePrefab; //holds all the pirate moles
 
-    public GameObject selectedMole;
-    public GameObject selectedMole2;
 
-    public bool[] selectedmoles;
+    public bool[] selectedmoles; //create pirates and check using boolean value to determine which pirate is selected
     //public int[] tempMole;
-    public List<int> tempMole = new List<int>();
+    public List<int> tempMole = new List<int>(); // tempMole stores current selected pirate, due to chance of multiple pirates being selected tempMole is list 
 
 
-    public float timeLeft = 10f;
-    public int amountOfPopUps = 1; // how many pop up at a time
+    public float timeLeft = 10f; // time left untile nexty mole spawns
+    public int amountOfPopUps = 1; // how many pirates pop up at a time
 
-    public Material moleSkin;
+    public Material moleSkin; //temp material set // change to MESH
     public Material setMaterial; //replace with mesh renderer material for 3d renders
 
 
@@ -34,13 +32,7 @@ public class SelectPopupMole : MonoBehaviour
     {
 
         Array.Resize(ref selectedmoles, molePrefab.Length);
-        //tempMole = new int[amountOfPopUps];
-        //for(int i = 0; i > molePrefab.Length; i++)
-        //{
-        //    selectedmoles[i] = false;
 
-        //    Debug.Log("Mole " + i + " equals false.");
-        //}
 
         SelectNextMole();
     }
@@ -48,20 +40,15 @@ public class SelectPopupMole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //SelectNextMole();
         CountDown();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 if (hit.collider.tag == "moles")
                 {
 
-                    //molePrefab[tempMole].GetComponent<MoleController>().Hit(); // activate HIT() from MoleXontroller resetting opsition
-                    ////molePrefab[tempMole].tag = "SelectedMole";
-                    //Debug.Log("hit: " + hit.collider.tag);
-                    //UpdateSelectedMole();
                     foreach (int moleIndex in tempMole)
                     {
                         molePrefab[moleIndex].GetComponent<MoleController>().Hit();
@@ -76,7 +63,6 @@ public class SelectPopupMole : MonoBehaviour
     }
     public void SelectNextMole()
     {
-        Debug.Log("Ran Script - Select next mole");
 
         // This value runs the bool statement
         bool run = true;
@@ -100,20 +86,6 @@ public class SelectPopupMole : MonoBehaviour
         for (int i = 0; i < amountOfPopUps; i++)
         {
 
-            //    tempMole[] = UnityEngine.Random.Range(0, selectedmoles.Length - 1);
-
-            //    if (selectedmoles[tempMole] == false)
-            //    {
-            //        selectedmoles[tempMole] = true;
-
-            //        popUp(molePrefab[tempMole]);
-            //        molePrefab[tempMole].GetComponent<Renderer>().material = setMaterial;//notify visually which mole is selected
-
-            //        foreach (var mole in selectedmoles)
-            //        {
-            //            Debug.Log($"Mole " + tempMole + " has been set to " + selectedmoles[tempMole]);
-            //        }
-            //    }
 
             int randomMole;
             do
@@ -121,10 +93,10 @@ public class SelectPopupMole : MonoBehaviour
                 randomMole = UnityEngine.Random.Range(0, selectedmoles.Length);
             } while (selectedmoles[randomMole]);
 
-            selectedmoles[randomMole] = true;
+            selectedmoles[randomMole] = true; // change value to true //random mole selected
             tempMole.Add(randomMole); // Store the selected mole's index in the list
 
-            popUp(molePrefab[randomMole]);
+            popUp(molePrefab[randomMole]); //run popUp function on selected mole
             molePrefab[randomMole].GetComponent<Renderer>().material = setMaterial;
 
 
@@ -165,14 +137,7 @@ public class SelectPopupMole : MonoBehaviour
 
     public void UpdateSelectedMole()
     {
-        //for (int i = 0; i < amountOfPopUps; i++)
-        //{
-        //    molePrefab[tempMole].GetComponent<Renderer>().material = moleSkin;
-        //    ////selectedMole.tag = "moles";
-        //    ////SelectMole();
-        //    selectedmoles[tempMole] = false;
-        //    SelectNextMole();
-        //}
+
         for (int i = 0; i < amountOfPopUps; i++)
         {
             if (i < tempMole.Count)
@@ -206,5 +171,4 @@ public class SelectPopupMole : MonoBehaviour
             timeLeft += 10f;
         }
     }
-
 }
