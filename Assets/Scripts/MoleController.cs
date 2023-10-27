@@ -141,7 +141,7 @@ public class MoleController : MonoBehaviour
         {
             //Hit();
             MoveDown();
-            selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
+            //selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
 
         }
         //else if(other.gameObject.tag == "Hammer" && this.tag == "SelectedMole2")

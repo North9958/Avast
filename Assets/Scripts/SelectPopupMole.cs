@@ -11,14 +11,10 @@ using static Valve.VR.SteamVR_TrackedObject;
 
 public class SelectPopupMole : MonoBehaviour
 {
-
     public GameObject[] molePrefab; //holds all the pirate moles
 
 
     public bool[] selectedmoles; //create pirates and check using boolean value to determine which pirate is selected
-    //public int[] tempMole;
-    public List<int> tempMole = new List<int>(); // tempMole stores current selected pirate, due to chance of multiple pirates being selected tempMole is list 
-
 
     public float timeLeft = 10f; // time left untile nexty mole spawns
     public int amountOfPopUps = 1; // how many pirates pop up at a time
@@ -49,16 +45,38 @@ public class SelectPopupMole : MonoBehaviour
                 if (hit.collider.tag == "moles")
                 {
 
-                    foreach (int moleIndex in tempMole)
+                    //for (int i = 0; i < selectedmoles.Length; i++) // loop to check every mole and if it is selected, if it is deselect it becuase its been hit.
+                    //{
+                    //    if (molePrefab[i] == true)
+                    //    {
+                    //        molePrefab[i].GetComponent<MoleController>().Hit();
+                    //        molePrefab[i].GetComponent<Renderer>().material = moleSkin;
+                    //        selectedmoles[i] = false;
+
+                    //    }
+                    //}
+                    //SelectNextMole();
+
+                    for (int i = 0; i < selectedmoles.Length; i++)
                     {
-                        molePrefab[moleIndex].GetComponent<MoleController>().Hit();
+                        if (selectedmoles[i] == true)
+                        {
+                            if (molePrefab[i].GetComponent<Collider>() == hit.collider)
+                            {
+                                molePrefab[i].GetComponent<MoleController>().Hit();
+                                molePrefab[i].GetComponent<Renderer>().material = moleSkin;
+                                selectedmoles[i] = false;
+                                break; // Exit the loop once a mole is hit
+                            }
+                        }
                     }
-                    // Optionally, you can update other game logic here related to hitting the moles.
-                    Debug.Log("hit: " + hit.collider.tag);
-                    UpdateSelectedMole();
+
+                    SelectNextMole();
 
                 }
+
             }
+
         }
     }
     public void SelectNextMole()
@@ -94,7 +112,6 @@ public class SelectPopupMole : MonoBehaviour
             } while (selectedmoles[randomMole]);
 
             selectedmoles[randomMole] = true; // change value to true //random mole selected
-            tempMole.Add(randomMole); // Store the selected mole's index in the list
 
             popUp(molePrefab[randomMole]); //run popUp function on selected mole
             molePrefab[randomMole].GetComponent<Renderer>().material = setMaterial;
@@ -130,29 +147,8 @@ public class SelectPopupMole : MonoBehaviour
 
     public void popUp(GameObject Mole)
     {
-        Debug.Log("Run popup script for" + Mole);
 
         Mole.GetComponent<MoleController>().Popup();
-    }
-
-    public void UpdateSelectedMole()
-    {
-
-        for (int i = 0; i < amountOfPopUps; i++)
-        {
-            if (i < tempMole.Count)
-            {
-                int moleIndex = tempMole[i];
-                // Perform your operations using moleIndex
-                molePrefab[moleIndex].GetComponent<Renderer>().material = moleSkin;
-                selectedmoles[moleIndex] = false;
-            }
-        }
-
-        tempMole.Clear(); // Clear the list to indicate that no moles are currently selected.
-
-        SelectNextMole();
-
     }
 
     void CountDown()
