@@ -156,6 +156,18 @@ public class MoleController : MonoBehaviour
 
     }
 
+    public void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "Hammer" && this.tag == "moles")
+        {
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+
+
+        }
+
+    }
+
     private void TickTimers()
 
     {
