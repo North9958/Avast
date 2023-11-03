@@ -24,7 +24,7 @@ public class SelectPopupMole : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
 
         Array.Resize(ref selectedmoles, molePrefab.Length);
@@ -70,7 +70,6 @@ public class SelectPopupMole : MonoBehaviour
                             }
                         }
                     }
-
                     SelectNextMole();
 
                 }
@@ -78,6 +77,17 @@ public class SelectPopupMole : MonoBehaviour
             }
 
         }
+    }
+
+    public void MoleHitHammer(int i)
+    {
+
+
+        molePrefab[i].GetComponent<Renderer>().material = moleSkin;
+        selectedmoles[i] = false;
+                
+        SelectNextMole();
+
     }
     public void SelectNextMole()
     {

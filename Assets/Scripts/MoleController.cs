@@ -21,10 +21,10 @@ public class MoleController : MonoBehaviour
     private bool isUp = false;
     private bool isMovingUp = false;
     private Vector3 originalPosition;
+    public int myNumber;
 
     private float popUpStartTime;
     private float popUpDuration = 1.0f; // Adjust this duration as needed
-
 
     Ray ray;
     RaycastHit hit;
@@ -35,7 +35,14 @@ public class MoleController : MonoBehaviour
 
     {
 
-
+        for (int i = 0; i < 5; i++)
+        {
+            if(this.name == selectMole.GetComponent<SelectPopupMole>().molePrefab[i].name)
+            {
+                myNumber = i;
+                break;
+            }
+        }
         this.tag = "moles";
         originalPosition = transform.position;
 
@@ -45,6 +52,8 @@ public class MoleController : MonoBehaviour
 
     void Update()
     {
+
+
 
         //randoLimitTimer += Time.deltaTime;
 
@@ -139,16 +148,12 @@ public class MoleController : MonoBehaviour
     {
         if (other.gameObject.tag == "Hammer" && this.tag == "moles")
         {
-            //Hit();
-            MoveDown();
-            //selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole();
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+
 
         }
-        //else if(other.gameObject.tag == "Hammer" && this.tag == "SelectedMole2")
-        //{
-        //    Hit();
-        //    selectMole.GetComponent<SelectPopupMole>().UpdateSelectedMole2();
-        //}
+
     }
 
     private void TickTimers()
