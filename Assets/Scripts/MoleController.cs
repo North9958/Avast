@@ -6,6 +6,7 @@ public class MoleController : MonoBehaviour
 {
 
     public GameObject selectMole;
+    public GameObject gameController; // References Game Controller
     public float moveDistance = 0f;
     [SerializeField] private float moveSpeed = .5f;
     float downTimer = 0;
@@ -110,6 +111,7 @@ public class MoleController : MonoBehaviour
     public void Popup()
 
     {
+        isHit = false;
         isMovingUp = true;
         moveDistance += moveSpeed * Time.deltaTime;
         moveDistance = Mathf.Clamp01(moveDistance);
@@ -150,6 +152,8 @@ public class MoleController : MonoBehaviour
         {
             Hit();
             selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+            //if special score, then more than one
+
 
 
         }
@@ -192,14 +196,19 @@ public class MoleController : MonoBehaviour
 
     public void Hit()
     {
-        isHit = true;
-        isUp = false;
-        //give the palyer a point?
-        MoveDown();
-        isMovingUp = false;
-        downTimer = 0;
-        upTimer = 0;
-        moveTimer = 0;
-        this.tag = "moles";
+        if (isHit == false)
+        {
+            isHit = true;
+            isUp = false;
+            //give the palyer a point?
+            MoveDown();
+            isMovingUp = false;
+            downTimer = 0;
+            upTimer = 0;
+            moveTimer = 0;
+            this.tag = "moles";
+            gameController.GetComponent<GameController>().score += 1;
+
+        }
     }
 }
