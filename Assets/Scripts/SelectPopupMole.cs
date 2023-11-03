@@ -22,6 +22,9 @@ public class SelectPopupMole : MonoBehaviour
     public Material moleSkin; //temp material set // change to MESH
     public Material setMaterial; //replace with mesh renderer material for 3d renders
 
+    public GameObject gameController; // References Game Controller
+
+
 
     // Start is called before the first frame update
     void Awake()
@@ -70,6 +73,9 @@ public class SelectPopupMole : MonoBehaviour
                             }
                         }
                     }
+                    //if special score, then more than one
+                    gameController.GetComponent<GameController>().score += 1;
+
                     SelectNextMole();
 
                 }
@@ -85,7 +91,8 @@ public class SelectPopupMole : MonoBehaviour
 
         molePrefab[i].GetComponent<Renderer>().material = moleSkin;
         selectedmoles[i] = false;
-                
+        //if special score, then more than one
+        gameController.GetComponent<GameController>().score += 1;
         SelectNextMole();
 
     }

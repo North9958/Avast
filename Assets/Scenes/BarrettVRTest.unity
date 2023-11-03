@@ -317,6 +317,7 @@ MonoBehaviour:
   amountOfPopUps: 1
   moleSkin: {fileID: 2100000, guid: aa748b284fe2875458aa1222f4c2ef7c, type: 2}
   setMaterial: {fileID: 2100000, guid: d4df8183a58aa9e4fb931cfefc3584d6, type: 2}
+  gameController: {fileID: 1864494145}
 --- !u!4 &167015387
 Transform:
   m_ObjectHideFlags: 0
