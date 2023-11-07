@@ -35,8 +35,17 @@ public class GameController : MonoBehaviour
     void Update()
     {
         scoreTxt.text = score.ToString();
-        time -= Time.deltaTime;
-        timeNum.text = time.ToString();
+        if (time > 0)
+        {
+            time -= Time.deltaTime;
+            timeNum.text = time.ToString();
+        }
+        else
+        {
+            time = 0;
+            timeNum.text = time.ToString();
+
+        }
 
 
         switch (phases) 
@@ -57,7 +66,8 @@ public class GameController : MonoBehaviour
     {
         if(time <= 0)
         {
-            SceneManager.LoadScene("BarrettVRTest", LoadSceneMode.Additive);
+            //SceneManager.LoadScene("BarrettVRTest", LoadSceneMode.Additive);
+            //time = 120f;
         }
     }
 }
