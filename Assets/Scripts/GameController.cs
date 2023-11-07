@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -14,25 +15,30 @@ public class GameController : MonoBehaviour
     public Quaternion PlayerDir; //Directoin player is looking
 
     public int score = 0;
-    public float Time = 0;
+    public float time = 120f;
     public int phases = 0;
 
     //UI
-    public TextMeshPro timeNum;
+    public Text timeNum;
+    public Text scoreTxt;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
-        timeNum.text = "2:00";
+        timeNum.text = time.ToString();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        scoreTxt.text = score.ToString();
+        time -= Time.deltaTime;
+        timeNum.text = time.ToString();
+
+
         switch (phases) 
         {
             case 0:
@@ -44,5 +50,14 @@ public class GameController : MonoBehaviour
                 break;
         }
 
+        gameEnd();
+    }
+
+    void gameEnd()
+    {
+        if(time <= 0)
+        {
+            SceneManager.LoadScene("BarrettVRTest", LoadSceneMode.Additive);
+        }
     }
 }

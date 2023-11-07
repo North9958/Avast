@@ -25,7 +25,7 @@ public class SelectPopupMole : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
 
         Array.Resize(ref selectedmoles, molePrefab.Length);
