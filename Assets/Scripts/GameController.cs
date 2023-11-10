@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     public int phases = 0;
 
     //UI
-    public Text timeNum;
+    public Text timeTxt;
     public Text scoreTxt;
 
 
@@ -27,23 +27,25 @@ public class GameController : MonoBehaviour
     void Start()
     {
 
-        timeNum.text = time.ToString();
-        
+        timeTxt.text = "Time: " + time;
+        scoreTxt.text = "Score: 0";
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        scoreTxt.text = score.ToString();
+        scoreTxt.text = "Score: " + score;
         if (time > 0)
         {
             time -= Time.deltaTime;
-            timeNum.text = time.ToString();
+            timeTxt.text = "Time: " + time;
         }
         else
         {
             time = 0;
-            timeNum.text = time.ToString();
+            timeTxt.text = "Time: " + time;
 
         }
 
