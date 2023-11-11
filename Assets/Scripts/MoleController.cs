@@ -27,8 +27,6 @@ public class MoleController : MonoBehaviour
     private float popUpStartTime;
     private float popUpDuration = 1.0f; // Adjust this duration as needed
 
-    public bool hitTriggered = false;
-
     Ray ray;
     RaycastHit hit;
 
@@ -152,12 +150,9 @@ public class MoleController : MonoBehaviour
     {
         if (other.gameObject.tag == "Hammer" && this.tag == "moles")
         {
-            if (hitTriggered)
-            {
-                Hit();
-                selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
-                //if special score, then more than one
-            }
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+            //if special score, then more than one
 
 
 
@@ -169,11 +164,10 @@ public class MoleController : MonoBehaviour
     {
         if (other.gameObject.tag == "Hammer" && this.tag == "moles")
         {
-            //if (other.gameObject.GetComponent<MalletController>().correctVel == true)
-            //{
-                Hit();
-                selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
-            //}
+            Hit();
+            selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+
+
         }
 
     }
@@ -214,7 +208,6 @@ public class MoleController : MonoBehaviour
             moveTimer = 0;
             this.tag = "moles";
             gameController.GetComponent<GameController>().score += 1;
-            hitTriggered = false;
 
         }
     }
