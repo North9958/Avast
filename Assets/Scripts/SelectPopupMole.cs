@@ -11,6 +11,7 @@ using static Valve.VR.SteamVR_TrackedObject;
 
 public class SelectPopupMole : MonoBehaviour
 {
+
     public GameObject[] molePrefab; //holds all the pirate moles
 
 
@@ -22,16 +23,21 @@ public class SelectPopupMole : MonoBehaviour
     public Material moleSkin; //temp material set // change to MESH
     public Material setMaterial; //replace with mesh renderer material for 3d renders
 
+    //HitSounds
+    AudioSource hitSound;
+    bool s_Play;
+    bool s_ToggleChange;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        hitSound = GetComponent<AudioSource>();
         Array.Resize(ref selectedmoles, molePrefab.Length);
 
 
         SelectNextMole();
+
     }
 
     // Update is called once per frame
@@ -46,24 +52,13 @@ public class SelectPopupMole : MonoBehaviour
                 if (hit.collider.tag == "moles")
                 {
 
-                    //for (int i = 0; i < selectedmoles.Length; i++) // loop to check every mole and if it is selected, if it is deselect it becuase its been hit.
-                    //{
-                    //    if (molePrefab[i] == true)
-                    //    {
-                    //        molePrefab[i].GetComponent<MoleController>().Hit();
-                    //        molePrefab[i].GetComponent<Renderer>().material = moleSkin;
-                    //        selectedmoles[i] = false;
-
-                    //    }
-                    //}
-                    //SelectNextMole();
-
                     for (int i = 0; i < selectedmoles.Length; i++)
                     {
                         if (selectedmoles[i] == true)
                         {
                             if (molePrefab[i].GetComponent<Collider>() == hit.collider)
                             {
+                                s_Play = true;
                                 molePrefab[i].GetComponent<MoleController>().Hit();
                                 molePrefab[i].GetComponent<Renderer>().material = moleSkin;
                                 selectedmoles[i] = false;
@@ -71,7 +66,7 @@ public class SelectPopupMole : MonoBehaviour
                             }
                         }
                     }
-
+                    s_Play = false;
                     SelectNextMole();
 
                 }
@@ -79,6 +74,8 @@ public class SelectPopupMole : MonoBehaviour
             }
 
         }
+
+        PlayHitSoundEffect();
     }
 
     public void MoleHitHammer(int i)
@@ -152,6 +149,25 @@ public class SelectPopupMole : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+    void PlayHitSoundEffect()
+    {
+        //Check to see if you just set the toggle to positive
+        if (s_Play == true && s_ToggleChange == true)
+        {
+            //Play the audio you attach to the AudioSource component
+            hitSound.Play();
+            //Ensure audio doesn’t play more than once
+            s_ToggleChange = false;
+        }
+        //Check if you just set the toggle to false
+        if (s_Play == false && s_ToggleChange == true)
+        {
+            //Stop the audio
+            hitSound.Stop();
+            //Ensure audio doesn’t play more than once
+            s_ToggleChange = false;
         }
     }
 

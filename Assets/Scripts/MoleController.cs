@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MoleController : MonoBehaviour
 {
-
     public GameObject selectMole;
     public GameObject gameController; // References Game Controller
     public float moveDistance = 0f;
@@ -15,20 +14,14 @@ public class MoleController : MonoBehaviour
     [SerializeField] private int randoLimitMax = 7;
     [SerializeField] private float maxUpTime = 5;
     private float moveTimer = 0;
-    [SerializeField] private float moveTimeLimit = .75f;
-    float randoLimitTimer = 0;
-    bool canMove;
     private bool isHit = true;
     private bool isUp = false;
     private bool isMovingUp = false;
     private Vector3 originalPosition;
     public int myNumber;
+    private float pushForce = 1;
 
-    private float popUpStartTime;
-    private float popUpDuration = 1.0f; // Adjust this duration as needed
 
-    Ray ray;
-    RaycastHit hit;
 
     // Start is called before the first frame update
 
@@ -38,7 +31,7 @@ public class MoleController : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            if(this.name == selectMole.GetComponent<SelectPopupMole>().molePrefab[i].name)
+            if (this.name == selectMole.GetComponent<SelectPopupMole>().molePrefab[i].name)
             {
                 myNumber = i;
                 break;
@@ -53,12 +46,6 @@ public class MoleController : MonoBehaviour
 
     void Update()
     {
-
-
-
-        //randoLimitTimer += Time.deltaTime;
-
-        //SetRandoLimit();
 
 
         TickTimers();
@@ -77,28 +64,7 @@ public class MoleController : MonoBehaviour
 
             }
         }
-        //else if (this.tag == "SelectedMole" || this.tag == "SelectedMole2") //
-        //{
 
-        //    Popup();
-        //    isMovingUp = true;
-        //    if (moveTimer >= moveTimeLimit)
-
-        //    {
-
-        //        isMovingUp = false;
-
-        //        isUp = true;
-
-        //        moveTimer = 0;
-
-        //    }
-
-        //}
-        //else if (this.tag == "moles")  //
-        //{
-        //    isMovingUp = false;
-        //}
 
     }
 
@@ -129,33 +95,28 @@ public class MoleController : MonoBehaviour
         transform.position = originalPosition;
 
     }
+    private void PushDown() //instead of moving directly to original position the gaol is the mole will be pushed along with hammer
+    {
+        this.gameObject.GetComponent<Rigidbody>().AddForce(0, -5, 0);
+    }
 
-    //private void SetRandoLimit()
-
-    //{
-
-    // if(randoLimitTimer >= 1)
-
-    // {
-
-    // randoLimitTimer = 0;
-
-    // randoLimit = Random.Range(2, randoLimitMax);
-
-    // }
-
-    //}
 
     public void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Hammer" && this.tag == "moles")
+        //if (other.gameObject.tag == "Hammer" && this.tag == "moles")
+        //{
+        //    Hit();
+        //    selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+        //    //if special score, then more than one
+
+
+
+        //}
+        if (other.gameObject.tag == "Plate")
         {
-            Hit();
+            MoveDown();
+            gameController.GetComponent<GameController>().score += 1;
             selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
-            //if special score, then more than one
-
-
-
         }
 
     }
@@ -165,11 +126,15 @@ public class MoleController : MonoBehaviour
         if (other.gameObject.tag == "Hammer" && this.tag == "moles")
         {
             Hit();
-            selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
+            ///this.gameObject.GetComponent<Rigidbody>().AddForce(0, -5, 0);
+            //selectMole.GetComponent<SelectPopupMole>().MoleHitHammer(myNumber);
 
 
         }
-
+    }
+    public void OnCollisionExit(Collision other) // NOT WORKING //NEXT TRY ADDING TRIGGER UNDER MOLE THAT WILL STOP POSITION, INCREASE SCORE, AND SELECTNEXTMOLE
+    {
+        this.gameObject.GetComponent<Rigidbody>().AddForce(0, 0, 0);
     }
 
     private void TickTimers()
@@ -200,14 +165,14 @@ public class MoleController : MonoBehaviour
         {
             isHit = true;
             isUp = false;
-            //give the palyer a point?
-            MoveDown();
+            //MoveDown(); 
+            //PushDown();
             isMovingUp = false;
             downTimer = 0;
             upTimer = 0;
             moveTimer = 0;
             this.tag = "moles";
-            gameController.GetComponent<GameController>().score += 1;
+            //gameController.GetComponent<GameController>().score += 1;
 
         }
     }

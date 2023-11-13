@@ -8,6 +8,7 @@ TagManager:
   - SelectedMole
   - Hammer
   - SelectedMole2
+  - Plate
   layers:
   - Default
   - TransparentFX
