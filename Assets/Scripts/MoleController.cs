@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class MoleController : MonoBehaviour
 {
+
+
     public GameObject selectMole;
     public GameObject gameController; // References Game Controller
     public float moveDistance = 0f;

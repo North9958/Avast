@@ -11,7 +11,6 @@ using static Valve.VR.SteamVR_TrackedObject;
 
 public class SelectPopupMole : MonoBehaviour
 {
-
     public GameObject[] molePrefab; //holds all the pirate moles
 
 
